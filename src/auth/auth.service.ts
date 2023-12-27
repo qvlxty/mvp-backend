@@ -1,4 +1,4 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/modules/user/user.service';
 import { LoginDto } from './dto/login.dto';
@@ -9,7 +9,7 @@ import { JwtPayload } from './dto/jwt';
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(forwardRef(() => UserService)) private usersService: UserService,
+    @Inject() private usersService: UserService,
     private jwtService: JwtService,
   ) {}
 
@@ -35,5 +35,13 @@ export class AuthService {
       email: user.email,
     };
     return `${this.jwtService.sign(payload)}`;
+  }
+
+  async getUserData(userId: number) {
+    const user = await this.usersService.getProfile(userId);
+    if (!user) {
+      throw new NotFoundException();
+    }
+    return user;
   }
 }

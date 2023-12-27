@@ -18,6 +18,12 @@ export class UserService {
     });
   }
 
+  public getProfile(userId: number) {
+    return this.user.findOneBy({
+      id: userId,
+    });
+  }
+
   public async createAccount(email: string, password: string) {
     const passwordHashed = hashSync(password, 10);
     await this.user.save({
