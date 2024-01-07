@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { hashSync } from 'bcrypt';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class UserService {
@@ -30,5 +31,13 @@ export class UserService {
       email,
       password: passwordHashed,
     });
+  }
+
+  public updateUser(id: string, user: UpdateProfileDto) {
+    return this.user.update(id, user);
+  }
+
+  public deleteUser(id: string): void {
+    this.user.delete(id);
   }
 }

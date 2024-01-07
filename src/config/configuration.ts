@@ -2,6 +2,7 @@ import * as process from 'process';
 import { JwtModuleOptions } from '@nestjs/jwt';
 import { configType } from './config.type';
 import { DataSourceOptions } from 'typeorm/data-source/DataSourceOptions';
+import { jwtConstants } from 'src/auth/constants';
 
 export const envFile: configType = {
   dbHost: process.env.DB_HOST || 'localhost',
@@ -34,7 +35,9 @@ export const dbConnectionOptions: DataSourceOptions = {
 };
 
 export const jwtOptions: JwtModuleOptions = {
-  secret: envFile.jwtSecret,
+  global: true,
+  // secret: envFile.jwtSecret,
+  secret: jwtConstants.secret,
   signOptions: {
     expiresIn: envFile.jwtExpiresIn,
   },
