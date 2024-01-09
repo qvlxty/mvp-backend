@@ -14,7 +14,6 @@ export class AuthController {
     return this.authService.login(body);
   }
 
-  @Public()
   @Get('me')
   getUserByToken(@User('id') id: number) {
     return this.authService.getUserData(id);
